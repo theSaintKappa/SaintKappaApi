@@ -21,4 +21,4 @@ const vulcan = require('./routes/vulcan');
     app.use('/railwayWebhook', railwayWebhook);
 })();
 
-app.listen(5000, () => console.log('Server is running'));
+app.listen(process.env.PORT || 5000, () => console.log('Server is running'));
