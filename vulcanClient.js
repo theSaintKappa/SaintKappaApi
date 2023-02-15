@@ -24,4 +24,6 @@ module.exports = {
     getGrades: async () => await client.getGrades(),
 
     getLessons: async (dateFrom, dateTo) => await client.getLessons(dateFrom, dateTo),
+
+    getChangedLessons: async (dateFrom, dateTo) => await client.getChangedLessons(dateFrom, dateTo),
 };

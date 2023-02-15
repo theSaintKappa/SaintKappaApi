@@ -34,4 +34,15 @@ router.get('/lessons', async (req, res) => {
     }
 });
 
+router.get('/changedLessons', async (req, res) => {
+    try {
+        const changedLessons = await vulcan.getChangedLessons(req.query.dateFrom, req.query.dateTo);
+
+        res.status(200).json(changedLessons);
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send('Bad Request');
+    }
+});
+
 module.exports = router;
