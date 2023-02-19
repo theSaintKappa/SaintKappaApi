@@ -1,5 +1,8 @@
 const router = require('express').Router();
+// node-fetch 2.x
+const fetch = require('node-fetch');
 const quotesSchema = require('../models/moses-quotes-schema');
+const picsSchema = require('../models/moses-pics-schema');
 
 router.get('/', async (req, res) => {
     try {
@@ -43,6 +46,36 @@ router.get('/quotes/random', async (req, res) => {
         const randomQuote = await quotesSchema.aggregate([{ $sample: { size: 1 } }]);
 
         res.status(200).json({ content: randomQuote });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send('Bad Request');
+    }
+});
+
+router.get('/pics', async (req, res) => {
+    try {
+        const pics = await picsSchema.find({}).limit(req.query.limit ?? null);
+
+        res.status(200).json(pics);
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send('Bad Request');
+    }
+});
+
+router.get('/pics/random', async (req, res) => {
+    try {
+        const pic = await picsSchema.aggregate([{ $sample: { size: 1 } }]);
+
+        if (req.query.json === 'true') return res.status(200).json(pic);
+
+        const response = await fetch(pic[0].url);
+
+        res.setHeader('Content-Type', response.headers.get('content-type'));
+        res.setHeader('Content-Length', response.headers.get('content-length'));
+        res.setHeader('Cache-Control', 'no-cache');
+        res.status(200);
+        response.body.pipe(res);
     } catch (err) {
         console.error(err);
         return res.status(400).send('Bad Request');
