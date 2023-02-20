@@ -1,7 +1,11 @@
+require('dotenv').config();
+
 const app = require('express')();
+
 const rateLimit = require('express-rate-limit');
 
-require('dotenv').config();
+const cors = require('cors');
+app.use(cors());
 
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
