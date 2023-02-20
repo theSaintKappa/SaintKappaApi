@@ -45,7 +45,7 @@ router.get('/quotes/random', async (req, res) => {
     try {
         const randomQuote = await quotesSchema.aggregate([{ $sample: { size: 1 } }]);
 
-        res.status(200).json({ content: randomQuote });
+        res.status(200).json(randomQuote);
     } catch (err) {
         console.error(err);
         return res.status(400).send('Bad Request');
@@ -67,13 +67,13 @@ router.get('/pics/random', async (req, res) => {
     try {
         const pic = await picsSchema.aggregate([{ $sample: { size: 1 } }]);
 
-        if (req.query.json === 'true') return res.status(200).json(pic);
+        if (req.query.json === 'true') return res.status(200).json(pic[0]);
 
         const response = await fetch(pic[0].url);
 
         res.setHeader('Content-Type', response.headers.get('content-type'));
         res.setHeader('Content-Length', response.headers.get('content-length'));
-        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Cache-Control', 'public, max-age=10');
         res.status(200);
         response.body.pipe(res);
     } catch (err) {

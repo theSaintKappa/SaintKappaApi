@@ -24,9 +24,9 @@ const vulcan = require('./routes/vulcan');
     console.log('Conected to MongoDB!');
 
     const limiter = rateLimit({
-        windowMs: 100,
+        windowMs: 150,
         max: 1,
-        message: "Hold your horses... You're beeing rate limited. You can only make 1 request per 100ms",
+        message: "Hold your horses... You're beeing rate limited. You can only make 1 request per 150ms",
         standardHeaders: true,
         legacyHeaders: false,
     });
