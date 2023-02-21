@@ -45,7 +45,7 @@ router.get('/quotes/random', async (req, res) => {
     try {
         const randomQuote = await quotesSchema.aggregate([{ $sample: { size: 1 } }]);
 
-        res.status(200).json(randomQuote);
+        res.status(200).json(randomQuote[0]);
     } catch (err) {
         console.error(err);
         return res.status(400).send('Bad Request');
