@@ -18,6 +18,7 @@ import root from './routes/root.js';
 import moses from './routes/moses.js';
 import railwayWebhook from './routes/railwayWebhook.js';
 import vulcan from './routes/vulcan.js';
+import status from './routes/status.js';
 
 (async () => {
     await vulcanClient.initialize();
@@ -38,6 +39,7 @@ import vulcan from './routes/vulcan.js';
     app.use('/moses', moses);
     app.use('/vulcan', vulcan);
     app.use('/railwayWebhook', railwayWebhook);
+    app.use('/status', status);
 })();
 
 app.listen(process.env.PORT || 5000, () => console.log('Server is running'));

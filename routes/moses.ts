@@ -33,7 +33,7 @@ router.get('/quotes', async (req, res) => {
     try {
         const quotes = await quotesSchema
             .find(quoteIdQ ? { quoteId: parseInt(quoteIdQ) } : {})
-            .sort({ quoteId: sortQ ? parseInt(sort[sortQ]) : 1 })
+            .sort({ quoteId: sortQ ? sort[sortQ] : 1 })
             .limit(limitQ);
 
         res.status(200).json({ query: { quoteId: quoteIdQ, sort: sortQ, limit: limitQ }, content: quotes });
