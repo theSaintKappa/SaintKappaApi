@@ -1,8 +1,10 @@
-const router = require('express').Router();
-// node-fetch 2.x
-const fetch = require('node-fetch');
-const quotesSchema = require('../models/moses-quotes-schema');
-const picsSchema = require('../models/moses-pics-schema');
+import express from 'express';
+const router = express.Router();
+
+import fetch from 'node-fetch';
+
+import quotesSchema from '../models/moses-quotes-schema.js';
+import picsSchema from '../models/moses-pics-schema.js';
 
 router.get('/', async (req, res) => {
     try {
@@ -82,4 +84,4 @@ router.get('/pics/random', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

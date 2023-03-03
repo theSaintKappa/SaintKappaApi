@@ -1,21 +1,23 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const app = require('express')();
+import express from 'express';
+const app = express();
 
-const rateLimit = require('express-rate-limit');
+import rateLimit from 'express-rate-limit';
 
-const cors = require('cors');
+import cors from 'cors';
 app.use(cors());
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 mongoose.set('strictQuery', false);
 
-const vulcanClient = require('./vulcanClient');
+import vulcanClient from './vulcanClient.js';
 
-const root = require('./routes/root');
-const moses = require('./routes/moses');
-const railwayWebhook = require('./routes/railwayWebhook');
-const vulcan = require('./routes/vulcan');
+import root from './routes/root.js';
+import moses from './routes/moses.js';
+import railwayWebhook from './routes/railwayWebhook.js';
+import vulcan from './routes/vulcan.js';
 
 (async () => {
     await vulcanClient.initialize();

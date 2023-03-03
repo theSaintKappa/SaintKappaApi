@@ -1,5 +1,6 @@
-const router = require('express').Router();
-const vulcan = require('../vulcanClient');
+import express from 'express';
+const router = express.Router();
+import vulcan from '../vulcanClient.js';
 
 router.get('/luckyNumber', async (req, res) => {
     try {
@@ -45,4 +46,4 @@ router.get('/changedLessons', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

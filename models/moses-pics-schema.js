@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const schema = new mongoose.Schema({
     url: {
@@ -47,4 +47,4 @@ const schema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('moses-pics', schema, 'moses-pics');
+export default mongoose.model('moses-pics', schema, 'moses-pics');

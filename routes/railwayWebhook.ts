@@ -1,7 +1,9 @@
-const router = require('express').Router();
-const bodyParser = require('body-parser');
-const { Webhook, MessageBuilder } = require('discord-webhook-node');
-require('dotenv').config();
+import express from 'express';
+const router = express.Router();
+import bodyParser from 'body-parser';
+import { Webhook, MessageBuilder } from 'discord-webhook-node';
+import dotenv from 'dotenv';
+dotenv.config();
 const hook = new Webhook(process.env.WEBHOOK_URL);
 
 router.use(bodyParser.json());
@@ -38,4 +40,4 @@ router.post('/', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
