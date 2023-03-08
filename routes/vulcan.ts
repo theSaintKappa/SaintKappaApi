@@ -45,5 +45,15 @@ router.get('/changedLessons', async (req, res) => {
         return res.status(400).send('Bad Request');
     }
 });
+router.get('/exams', async (req, res) => {
+    try {
+        const exams = await vulcan.getExams(req.query.dateFrom, req.query.dateTo);
+
+        res.status(200).json(exams);
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send('Bad Request');
+    }
+});
 
 export default router;

@@ -21,7 +21,7 @@
         "express-rate-limit": "^6.7.0",
         "mongoose": "^6.9.0",
         "node-fetch": "^3.3.0",
-        "vulcan-api-js": "^3.2.2"
+        "vulcan-api-js": "^3.3.0"
     },
     "devDependencies": {
         "@types/node": "^18.14.5",

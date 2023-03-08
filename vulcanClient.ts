@@ -26,4 +26,6 @@ export default {
     getLessons: async (dateFrom, dateTo) => await client.getLessons(dateFrom, dateTo),
 
     getChangedLessons: async (dateFrom, dateTo) => await client.getChangedLessons(dateFrom, dateTo),
+
+    getExams: async (dateFrom, dateTo) => await client.getExams(dateFrom, dateTo),
 };
