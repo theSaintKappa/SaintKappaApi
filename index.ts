@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from 'express';
 const app = express();
+app.use(express.json());
 
 import rateLimit from 'express-rate-limit';
 
@@ -19,6 +20,7 @@ import moses from './routes/moses.js';
 import railwayWebhook from './routes/railwayWebhook.js';
 import vulcan from './routes/vulcan.js';
 import status from './routes/status.js';
+import albumCover from './routes/albumCover.js';
 
 (async () => {
     await vulcanClient.initialize();
@@ -40,6 +42,7 @@ import status from './routes/status.js';
     app.use('/vulcan', vulcan);
     app.use('/railwayWebhook', railwayWebhook);
     app.use('/status', status);
+    app.use('/albumCover', albumCover);
 })();
 
 app.listen(process.env.PORT || 5000, () => console.log('Server is running'));

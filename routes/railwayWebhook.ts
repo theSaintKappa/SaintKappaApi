@@ -1,12 +1,10 @@
 import express from 'express';
 const router = express.Router();
-import bodyParser from 'body-parser';
 import { Webhook, MessageBuilder } from 'discord-webhook-node';
 import dotenv from 'dotenv';
 dotenv.config();
 const hook = new Webhook(process.env.WEBHOOK_URL);
 
-router.use(bodyParser.json());
 router.post('/', async (req, res) => {
     if (req.query.key !== process.env.WEBHOOK_KEY) return res.status(401).send('401 Unauthorized');
 
