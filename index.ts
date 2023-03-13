@@ -35,8 +35,8 @@ import albumCover from './routes/albumCover.js';
         standardHeaders: true,
         legacyHeaders: false,
     });
-
     app.use(limiter);
+
     app.use('/', root);
     app.use('/moses', moses);
     app.use('/vulcan', vulcan);
