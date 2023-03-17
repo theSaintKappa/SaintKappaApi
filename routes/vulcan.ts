@@ -1,3 +1,5 @@
+import express from 'express';
+const router = express.Router();
 import vulcan from '../vulcanClient.js';
 import { Student } from 'vulcan-api-js/lib/models/student.js';
 import { Account } from 'vulcan-api-js/lib/models/account.js';
@@ -15,9 +17,6 @@ interface Messages {
     messages: Message[];
 }
 
-import express from 'express';
-const router = express.Router();
-
 router.get('/luckyNumber', async (req, res) => {
     try {
         const luckyNumber: LuckyNumber = await vulcan.getLuckyNumber();
@@ -31,7 +30,7 @@ router.get('/luckyNumber', async (req, res) => {
 
 router.get('/grades', async (req, res) => {
     try {
-        const grades: Grade[] = await vulcan.getGrades(req.query.lastSync);
+        const grades: Grade[] = await vulcan.getGrades(new Date(req.query.lastSync?.toString() ?? 0));
 
         res.status(200).json(grades);
     } catch (err) {
@@ -42,7 +41,9 @@ router.get('/grades', async (req, res) => {
 
 router.get('/lessons', async (req, res) => {
     try {
-        const lessons: Lesson[] = await vulcan.getLessons(req.query.dateFrom, req.query.dateTo);
+        let lessons: Lesson[] = await vulcan.getLessons(new Date(req.query.dateFrom?.toString() ?? Date.now()), new Date(req.query.dateTo?.toString() ?? Date.now()));
+        // sort by time slot
+        lessons = lessons.sort((a, b) => (a.timeSlot.position > b.timeSlot.position ? 1 : -1));
 
         res.status(200).json(lessons);
     } catch (err) {
@@ -53,7 +54,7 @@ router.get('/lessons', async (req, res) => {
 
 router.get('/changedLessons', async (req, res) => {
     try {
-        const changedLessons: ChangedLesson[] = await vulcan.getChangedLessons(req.query.dateFrom, req.query.dateTo);
+        let changedLessons: ChangedLesson[] = await vulcan.getChangedLessons(new Date(req.query.dateFrom?.toString() ?? Date.now()), new Date(req.query.dateTo?.toString() ?? Date.now()));
 
         res.status(200).json(changedLessons);
     } catch (err) {
@@ -64,7 +65,7 @@ router.get('/changedLessons', async (req, res) => {
 
 router.get('/exams', async (req, res) => {
     try {
-        const exams: Exam[] = await vulcan.getExams(req.query.lastSync);
+        const exams: Exam[] = await vulcan.getExams(new Date(req.query.lastSync?.toString() ?? 0));
 
         res.status(200).json(exams);
     } catch (err) {
@@ -97,7 +98,9 @@ router.get('/homework', async (req, res) => {
 
 router.get('/attandance', async (req, res) => {
     try {
-        const attendance: Attendance[] = await vulcan.getAttandance(req.query.dateFrom ?? new Date(), req.query.dateTo ?? new Date());
+        let attendance: Attendance[] = await vulcan.getAttandance(new Date(req.query.dateFrom?.toString() ?? Date.now()), new Date(req.query.dateTo?.toString() ?? Date.now()));
+        // sort by time slot
+        attendance = attendance.sort((a, b) => (a.time.position > b.time.position ? 1 : -1));
 
         res.status(200).json(attendance);
     } catch (err) {
@@ -119,7 +122,7 @@ router.get('/students', async (req, res) => {
 
 router.get('/addAccount', async (req, res) => {
     try {
-        const newAccount: Account = await vulcan.newAccount(req.query.token, req.query.symbol, req.query.pin);
+        const newAccount: Account = await vulcan.newAccount(req.query.token.toString(), req.query.symbol.toString(), req.query.pin.toString());
 
         res.status(200).json({ newAccount, students: vulcan.getStudents() });
     } catch (err) {
@@ -127,5 +130,20 @@ router.get('/addAccount', async (req, res) => {
         return res.status(400).send('Bad Request');
     }
 });
+
+// router.get('/selectStudent/:pupilId', async (req, res) => {
+//     try {
+//         const students: Student[] = await vulcan.fetchStudents();
+
+//         if (!students.map((student: Student) => student.pupil.id.toString()).includes(req.params.pupilId)) return res.status(400).send({ code: 400, message: 'Student not found' });
+
+//         const selectedStudent: Student = await vulcan.selectStudent(students.find((student: Student) => student.pupil.id.toString() === req.params.pupilId));
+
+//         res.status(200).json(selectedStudent);
+//     } catch (err) {
+//         console.error(err);
+//         return res.status(400).send('Bad Request');
+//     }
+// });
 
 export default router;

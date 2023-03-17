@@ -3,7 +3,7 @@ import { Account } from 'vulcan-api-js/lib/models/account.js';
 import { Student } from 'vulcan-api-js/lib/models/student.js';
 import { MessageBox } from 'vulcan-api-js/lib/models/messageBox.js';
 
-let client: VulcanHebe, students: Student[], keystore: Keystore, messageBox: MessageBox;
+let client: VulcanHebe, students: Student[], keystore: Keystore, messageBox: MessageBox, selectedStudent: Student;
 
 const vulcan = async () => {
     keystore = new Keystore();
@@ -50,5 +50,12 @@ export default {
         const newStudent: Account = await registerAccount(keystore, token, symbol, pin);
         students = await client.getStudents();
         return newStudent;
+    },
+
+    selectStudent: async (student: Student) => {
+        await client.selectStudent(student);
+        client = new VulcanHebe(keystore, AccountTools.loadFromObject({ loginId: parseInt(process.env.LOGINID), userLogin: process.env.USERLOGIN, userName: process.env.USERLOGIN, restUrl: process.env.RESTURL }));
+        selectedStudent = student;
+        return selectedStudent;
     },
 };
