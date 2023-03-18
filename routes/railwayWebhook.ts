@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
         res.status(200).send('Successfuly sent webhook!');
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 

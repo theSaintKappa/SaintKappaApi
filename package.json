@@ -1,6 +1,6 @@
 {
     "name": "saintkappa-api",
-    "version": "2.5.0",
+    "version": "2.5.1",
     "description": "An attempt at creating my own Rest API. Mainly for personal use.",
     "main": "dist/index.js",
     "type": "module",

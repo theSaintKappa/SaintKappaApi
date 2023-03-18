@@ -18,7 +18,7 @@ import vulcanClient from './vulcanClient.js';
 import root from './routes/root.js';
 import moses from './routes/moses.js';
 import railwayWebhook from './routes/railwayWebhook.js';
-import status from './routes/status.js';
+import badge from './routes/badge.js';
 import albumCover from './routes/albumCover.js';
 import vulcan from './routes/vulcan.js';
 
@@ -37,7 +37,7 @@ app.use('/', root);
 app.use('/moses', moses);
 
 app.use('/railwayWebhook', railwayWebhook);
-app.use('/status', status);
+app.use('/badge', badge);
 app.use('/albumCover', albumCover);
 
 await vulcanClient.initialize();

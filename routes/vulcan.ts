@@ -21,10 +21,10 @@ router.get('/luckyNumber', async (req, res) => {
     try {
         const luckyNumber: LuckyNumber = await vulcan.getLuckyNumber();
 
-        res.status(200).json({ number: luckyNumber.number !== '0' ? luckyNumber.number : null, day: luckyNumber.number !== '0' ? new Date(luckyNumber.day) : null });
+        res.status(200).json({ number: luckyNumber.number != '0' ? luckyNumber.number : null, day: luckyNumber.number != '0' ? new Date(luckyNumber.day) : null });
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
@@ -35,20 +35,23 @@ router.get('/grades', async (req, res) => {
         res.status(200).json(grades);
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
 router.get('/lessons', async (req, res) => {
     try {
         let lessons: Lesson[] = await vulcan.getLessons(new Date(req.query.dateFrom?.toString() ?? Date.now()), new Date(req.query.dateTo?.toString() ?? Date.now()));
+
+        if (req.query.group) lessons = lessons.filter((lesson: Lesson) => lesson.distribution?.shortcut === req.query.group.toString() || !lesson.distribution);
+
         // sort by time slot
-        lessons = lessons.sort((a, b) => (a.timeSlot.position > b.timeSlot.position ? 1 : -1));
+        lessons = lessons.sort((a: Lesson, b: Lesson) => (a.timeSlot.position > b.timeSlot.position ? 1 : -1));
 
         res.status(200).json(lessons);
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
@@ -59,7 +62,7 @@ router.get('/changedLessons', async (req, res) => {
         res.status(200).json(changedLessons);
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
@@ -70,7 +73,7 @@ router.get('/exams', async (req, res) => {
         res.status(200).json(exams);
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
@@ -81,7 +84,7 @@ router.get('/messages', async (req, res) => {
         res.status(200).json(messages);
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
@@ -92,7 +95,7 @@ router.get('/homework', async (req, res) => {
         res.status(200).json(homework);
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
@@ -105,7 +108,7 @@ router.get('/attandance', async (req, res) => {
         res.status(200).json(attendance);
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
@@ -116,7 +119,7 @@ router.get('/students', async (req, res) => {
         res.status(200).json(students);
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
@@ -127,7 +130,7 @@ router.get('/addAccount', async (req, res) => {
         res.status(200).json({ newAccount, students: vulcan.getStudents() });
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Bad Request');
+        res.status(500).json({ code: 500, message: 'Internal Server Error' });
     }
 });
 
